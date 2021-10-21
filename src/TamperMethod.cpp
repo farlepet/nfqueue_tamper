@@ -4,6 +4,7 @@
 
 #include "TamperMethod.hpp"
 #include "TamperMethods/TamperMethodRand.hpp"
+#include "TamperMethods/TamperMethodFixed.hpp"
 
 TamperMethod::TamperMethod(std::map<std::string, std::string> &_opts) {
     if(_opts.count("chance")) {
@@ -40,9 +41,8 @@ TamperMethod *TamperMethod::create(std::string &_str) {
 
     if(meth == "rand") {
         return new TamperMethodRand(opts);
-    } else if(meth == "dummy") {
-        /* TODO */
-        return NULL;
+    } else if(meth == "fixed") {
+        return new TamperMethodFixed(opts);
     } else {
         throw std::runtime_error("Unhandled tamper method: " + meth);
     }

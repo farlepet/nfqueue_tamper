@@ -39,6 +39,10 @@ Available methods and associated options:
      - NOT CURRENTLY SUPPORTED
    - `sz`  - Number of bytes to modify, can be a range
      - Defaults to 1
+ - `fixed` - Overwrite region of data with supplied values
+   - `off` - Offset at which to apply data
+     - Cannot be a range
+   - `data` - Hex data
 
 Global options:
  - `chance` - How likely the tamper method is to be used on a given packet
@@ -47,7 +51,8 @@ Global options:
 
 Example:
 
-    nfqueue -q 0 -t "rand;chance=.5;off=0:4;sz=1:2"
+    nfqueue -q 0 -t "rand;chance=.5;off=0:4;sz=1:2" -t "fixed;chance=0.1;off=16;data=0FEA0011"
 
 This will have a 50% chance on every packet of replacing one or two of the first
-five bytes in the payload (application-layer data) with a random value.
+five bytes in the payload (application-layer data) with a random value, and a 10%
+chance of replacing data at offset 16-19 with 0F,EA,00,11.
