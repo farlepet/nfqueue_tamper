@@ -51,7 +51,10 @@ int PacketHandler::handleTCPPacket(struct iphdr *_ip_head) {
 int PacketHandler::handleUDPPacket(struct iphdr *_ip_head) {
     struct udphdr *udp_head = (struct udphdr *)((uint8_t *)_ip_head + (_ip_head->ihl * 4));
 
-    int ret = this->doTamper(ntohs(udp_head->len), (uint8_t *)udp_head + sizeof(udp_head));
+    size_t   len  = ntohs(udp_head->len) - sizeof(struct udphdr);
+    uint8_t *data = (uint8_t *)udp_head + sizeof(udp_head);
+
+    int ret = this->doTamper(len, data);
 
     /* TODO: For now, we are just disabling the checksum. This will not work on
      * IPv6 packets. */
