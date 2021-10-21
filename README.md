@@ -51,7 +51,7 @@ Global options:
 
 Example:
 
-    nfqueue -q 0 -t "rand;chance=.5;off=0:4;sz=1:2" -t "fixed;chance=0.1;off=16;data=0FEA0011"
+    nfqueue_tamper -q 0 -t "rand;chance=.5;off=0:4;sz=1:2" -t "fixed;chance=0.1;off=16;data=0FEA0011"
 
 This will have a 50% chance on every packet of replacing one or two of the first
 five bytes in the payload (application-layer data) with a random value, and a 10%
