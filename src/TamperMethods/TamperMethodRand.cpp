@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 #include "TamperMethods/TamperMethodRand.hpp"
 
@@ -20,17 +21,25 @@ rand_engine(rand_rd()) {
 }
 
 int TamperMethodRand::tamper(size_t len, uint8_t *data) {
-    int off = TamperMethod::randRange(this->offset_min, this->offset_max, len);
-    int sz  = TamperMethod::randRange(this->size_min,   this->size_max,   len);
+    size_t off = TamperMethod::randRange(this->offset_min, this->offset_max, len-1);
+    size_t sz  = TamperMethod::randRange(this->size_min,   this->size_max,   len);
     
-    std::cerr << "Off: " << off << ", Sz: " << sz << std::endl;
+    if(off + sz > len) {
+        sz = len - off;
+    }
+
+    std::cerr << "  + TamperMethodRand(off: " << off << ", sz: " << sz << "): ";
+    std::cerr << std::setw(2) << std::setfill('0') << std::hex;
 
     std::uniform_int_distribution<uint8_t> rand_dist(0, 255);
 
     /* TODO: non-consecutive */
-    for(int i = off; i < (off + sz); i++) {
+    for(size_t i = off; i < (off + sz); i++) {
         data[i] = rand_dist(this->rand_engine);
+        std::cerr << unsigned(data[i]);
     }
+    
+    std::cerr << std::endl << std::setw(0) << std::setfill(' ') << std::dec;
 
     return 0;
 }

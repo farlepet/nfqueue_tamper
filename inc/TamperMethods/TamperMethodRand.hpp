@@ -5,15 +5,18 @@
 
 #include "TamperMethod.hpp"
 
+/**
+ * @brief Method used to tamper with packet data using random data manipulation
+ */
 class TamperMethodRand : public TamperMethod {
     private:
-        int offset_min = 0;  /*!< Minimum offset */
-        int offset_max = -1; /*!< Maximum offset */
+        int offset_min = 0;       /*!< Minimum offset */
+        int offset_max = -1;      /*!< Maximum offset */
 
-        bool consecutive = false;
+        bool consecutive = false; /*!< Whether modified regions must be consecutive bytes */
 
-        int size_min = 1;
-        int size_max = 1;
+        int size_min = 1;         /*!< Minimum size of modified region */
+        int size_max = 1;         /*!< Maximum size of modified region */
     
         std::random_device         rand_rd;
         std::default_random_engine rand_engine;

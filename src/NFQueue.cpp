@@ -67,22 +67,15 @@ int NFQueue::callback(struct nfq_q_handle *_queue, struct nfgenmsg *_nfmsg, stru
     uint8_t                     *payload;
     size_t                       payload_len;
 
-    std::cerr << "---------------------------" << std::endl;
-
     head = nfq_get_msg_packet_hdr(_data);
     id   = ntohl(head->packet_id);
 
-    /*std::cerr << "  Proto: " << std::hex << ntohs(head->hw_protocol) << std::dec;
-    std::cerr << ", hook: " << head->hook << ", id: " << head->packet_id << std::endl;*/
-
     payload_len = nfq_get_payload(_data, &payload);
 
-    /*std::cerr << "  Payload size: " << payload_len << std::endl;*/
     memcpy(this->newPayload, payload, payload_len);
 
     this->pHandler.handlePacket(payload_len, payload);
-    /* TODO: Modify payload */
 
-    /* TODO: Accept dropping packets */
+    /* TODO: Allow dropping packets */
     return nfq_set_verdict(_queue, id, NF_ACCEPT, payload_len, payload);
 }

@@ -7,9 +7,12 @@
 
 #include "TamperMethod.hpp"
 
+/**
+ * @brief Handles packets received by the NFQueue, and applies tampers
+ */
 class PacketHandler {
     private:
-        std::vector<TamperMethod *> meths;
+        std::vector<TamperMethod *> meths; /*!< List of configured tamper methods, in order they are to be applied */
         
         std::random_device          rand_rd;
         std::default_random_engine  rand_engine;
@@ -22,8 +25,21 @@ class PacketHandler {
     public:
         PacketHandler();
 
+        /**
+         * @brief Add tamper method to the end of the list
+         * 
+         * @param _meth Tamper method
+         */
         void addTamperMethod(TamperMethod *_meth);
 
+        /**
+         * @brief Handle a packet
+         * 
+         * @param len Length of packet data
+         * @param data pointer to packet data
+         * 
+         * @return <Return value currently unused >
+         */
         int handlePacket(size_t len, uint8_t *data);
 };
 

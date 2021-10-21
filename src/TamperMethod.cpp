@@ -65,6 +65,9 @@ int TamperMethod::parseRange(std::string &_str, int &_min, int &_max) {
         }
     } else {
         _min = _max = std::stoi(_str);
+        if(_min < -1) {
+            return -1;
+        }
     }
     
     return 0;
@@ -82,9 +85,12 @@ int TamperMethod::parseBool(std::string &_str, bool &_val) {
     return 0;
 }
 
-int TamperMethod::randRange(int _min, int _max, int _sz) {
-    if(_max == -1) {
+size_t TamperMethod::randRange(int _min, int _max, size_t _sz) {
+    if(_max == -1 || (size_t)_max > _sz) {
         _max = _sz;
+    }
+    if(_min == -1 || (size_t)_min > _sz) {
+        _min = _sz;
     }
 
     if(_min == _max) {
@@ -92,9 +98,9 @@ int TamperMethod::randRange(int _min, int _max, int _sz) {
     }
 
     /* TODO: This is likely highly ineffecient */
-    std::random_device                 rand_rd;
-    std::default_random_engine         rand_engine(rand_rd());
-    std::uniform_int_distribution<int> rand_dist(_min, _max);
+    std::random_device                    rand_rd;
+    std::default_random_engine            rand_engine(rand_rd());
+    std::uniform_int_distribution<size_t> rand_dist(_min, _max);
 
     return rand_dist(rand_engine);
 }

@@ -51,7 +51,6 @@ namespace po = boost::program_options;
 static int _handleCmdLine(int argc, char **argv) {
     po::options_description desc("Program options");
 
-    /* TODO: Clean this up if more options are added. */
     desc.add_options()
         ("help,h",   "Print this help message")
         ("tamper,t", po::value<std::vector<std::string>>(&_options.tamperMethods)->multitoken(), "Tamper method")
