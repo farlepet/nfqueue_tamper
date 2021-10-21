@@ -47,11 +47,11 @@ int PacketHandler::handleTCPPacket(struct iphdr *_ip_head) {
 typedef struct {
     uint32_t src_addr;
     uint32_t dst_addr;
-    uint16_t proto;
+    uint8_t  zero;
+    uint8_t  proto;
     uint16_t length;
-} _udp_ipv4_pseudo_t;
+} __attribute__((__packed__)) _udp_ipv4_pseudo_t;
 
-__attribute__((__unused__))
 static uint32_t _udpChecksum(size_t len, uint8_t *data) {
     uint32_t accum = 0;
     for(size_t i = 0; i < len; i++) {
@@ -72,16 +72,15 @@ int PacketHandler::handleUDPPacket(struct iphdr *_ip_head) {
 
     int ret = this->doTamper(len, data);
 
-    /* TODO: For now, we are just disabling the checksum. This will not work on
-     * IPv6 packets. */
     udp_head->check = 0;
 
-#if 0
+    /* Calculate checksum */
     uint32_t chksum = 0;
     if(_ip_head->version == 4) {
         _udp_ipv4_pseudo_t ph = {
             .src_addr = _ip_head->saddr,
             .dst_addr = _ip_head->daddr,
+            .zero     = 0,
             .proto    = _ip_head->protocol,
             .length   = udp_head->len
         };
@@ -98,8 +97,8 @@ int PacketHandler::handleUDPPacket(struct iphdr *_ip_head) {
         chksum = ~chksum;
     }
 
-    udp_head->check = (uint16_t)chksum;
-#endif
+    /* NOTE: This is assuming a little-endian machine */
+    udp_head->check = (uint16_t)((chksum << 8) | ((chksum >> 8) & 0xFF));
 
     return ret;
 }
