@@ -4,6 +4,11 @@ NFQueue Tamper
 A tool to help in testing client/server robustness in the presence of malformed
 data.
 
+Supported protocols:
+ - IPv4
+   - UDP
+   - TCP
+
 Building
 --------
 
