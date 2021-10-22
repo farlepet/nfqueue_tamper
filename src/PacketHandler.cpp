@@ -40,7 +40,6 @@ int PacketHandler::handlePacket(size_t len, uint8_t *data) {
 
 
 static uint32_t _checksum(size_t len, uint8_t *data) {
-    std::cerr << "  _checksum(" << len << ")" << std::endl;
     uint32_t accum = 0;
     for(size_t i = 0; i < len; i++) {
         if(i & 1) {
