@@ -14,8 +14,8 @@ class PacketHandler {
     private:
         std::vector<TamperMethod *> meths; /*!< List of configured tamper methods, in order they are to be applied */
         
-        std::random_device          rand_rd;
-        std::default_random_engine  rand_engine;
+        std::random_device rand_rd;
+        std::mt19937       rand_engine;
 
         int handleTCPPacket(struct iphdr *_ip_head);
         int handleUDPPacket(struct iphdr *_ip_head);

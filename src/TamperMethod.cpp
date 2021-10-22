@@ -5,6 +5,7 @@
 #include "TamperMethod.hpp"
 #include "TamperMethods/TamperMethodRand.hpp"
 #include "TamperMethods/TamperMethodFixed.hpp"
+#include "TamperMethods/TamperMethodReplace.hpp"
 
 TamperMethod::TamperMethod(std::map<std::string, std::string> &_opts) {
     if(_opts.count("chance")) {
@@ -43,6 +44,8 @@ TamperMethod *TamperMethod::create(std::string &_str) {
         return new TamperMethodRand(opts);
     } else if(meth == "fixed") {
         return new TamperMethodFixed(opts);
+    } else if(meth == "replace") {
+        return new TamperMethodReplace(opts);
     } else {
         throw std::runtime_error("Unhandled tamper method: " + meth);
     }
@@ -85,7 +88,24 @@ int TamperMethod::parseBool(std::string &_str, bool &_val) {
     return 0;
 }
 
+int TamperMethod::parseHex(std::string &_str, std::vector<uint8_t> &_val) {
+    if((_str.size() == 0) ||
+       (_str.size() & 1)) {
+        return -1;
+    }
+    for(size_t i = 0; i < _str.size(); i+=2) {
+        uint8_t byte = std::stoi(_str.substr(i,2), NULL, 16);
+        _val.push_back(byte);
+    }
+
+    return 0;
+}
+
+
 size_t TamperMethod::randRange(int _min, int _max, size_t _sz) {
+    static std::random_device rand_rd;
+    static std::mt19937       rand_engine(rand_rd());
+    
     if(_max == -1 || (size_t)_max > _sz) {
         _max = _sz;
     }
@@ -98,8 +118,6 @@ size_t TamperMethod::randRange(int _min, int _max, size_t _sz) {
     }
 
     /* TODO: This is likely highly ineffecient */
-    std::random_device                    rand_rd;
-    std::default_random_engine            rand_engine(rand_rd());
     std::uniform_int_distribution<size_t> rand_dist(_min, _max);
 
     return rand_dist(rand_engine);

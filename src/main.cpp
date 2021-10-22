@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
 
         NFQueue nfqueue(_options.queueNumber, pHandler);
         nfqueue.open();
+        std::cerr << "Starting NFQueue listener..." << std::endl;
         nfqueue.run();
         /* TODO: Run in a different thread, close on keyboard interrupt. */
         nfqueue.close();

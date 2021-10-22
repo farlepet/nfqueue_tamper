@@ -78,6 +78,22 @@ class TamperMethod {
         static int parseBool(std::string &_str, bool &_val);
 
         /**
+         * @brief Parse hex string from configuration
+         * 
+         * The format is byte-ordered groups of two hexadecimal characters:
+         *   <byte0>[<byte1>[<byte2>[...]]]
+         *   
+         * Where each of <byteX> is a sequence of two characters, e.g.:
+         *   C0FFEE1234
+         * 
+         * @param _str Configuration value string
+         * @param _val Output byte vector
+         * 
+         * @return 0 on success, < 0 on failure
+         */
+        static int parseHex(std::string &_str, std::vector<uint8_t> &_val);
+
+        /**
          * @brief Generates a random non-negative number in the given range
          * 
          * @param _min Minimum value, -1 = _sz

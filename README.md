@@ -48,6 +48,14 @@ Available methods and associated options:
    - `off` - Offset at which to apply data
      - Cannot be a range
    - `data` - Hex data
+ - `replace` - Replace bytes within matching sequence
+   - `off` - Offset into sequence to start replacing
+     - Cannot be a range
+     - Can be negative
+   - `seq` - Hex sequence to search for
+   - `data` - Replacement data
+   - `multi` - Whether to allow multiple replacements
+     - NOTE: Previously matching sequence is currently skipped
 
 Global options:
  - `chance` - How likely the tamper method is to be used on a given packet

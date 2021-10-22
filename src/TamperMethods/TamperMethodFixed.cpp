@@ -17,12 +17,8 @@ TamperMethod(_opts) {
         throw std::runtime_error("offset<0 for TamperMethodFixed!");
     }
 
-    if(_opts["data"].size() & 1) {
-        throw std::runtime_error("Data length must be an even number of characters for TamperMethodFixed!");
-    }
-    for(size_t i = 0; i < _opts["data"].size(); i+=2) {
-        uint8_t byte = std::stoi(_opts["data"].substr(i,2), NULL, 16);
-        this->data.push_back(byte);
+    if(TamperMethod::parseHex(_opts["data"], this->data)) {
+        throw std::runtime_error("Error while parsing data for TamperMethodFixed!");
     }
 }
 

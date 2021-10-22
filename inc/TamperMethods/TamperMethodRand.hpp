@@ -18,8 +18,8 @@ class TamperMethodRand : public TamperMethod {
         int size_min = 1;         /*!< Minimum size of modified region */
         int size_max = 1;         /*!< Maximum size of modified region */
     
-        std::random_device         rand_rd;
-        std::default_random_engine rand_engine;
+        std::random_device rand_rd;
+        std::mt19937       rand_engine;
 
     public:
         TamperMethodRand(std::map<std::string, std::string> &_opts);

@@ -120,7 +120,7 @@ int PacketHandler::doTamper(size_t len, uint8_t *data) {
         return 0;
     }
 
-    std::uniform_real_distribution<double> rand_dist(0, 1);
+    std::uniform_real_distribution<double> rand_dist(0, 0.999);
     
     for(TamperMethod *meth : this->meths) {
         if(meth->getProbability() >= rand_dist(this->rand_engine)) {
