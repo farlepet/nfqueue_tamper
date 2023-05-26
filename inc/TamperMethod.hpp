@@ -1,6 +1,7 @@
 #ifndef _TAMPER_METHOD_HPP_
 #define _TAMPER_METHOD_HPP_
 
+#include <cstdint>
 #include <string>
 #include <map>
 
